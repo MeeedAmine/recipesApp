@@ -4,25 +4,39 @@ import { Container } from '@material-ui/core'
 import CircularProgress from "@material-ui/core/CircularProgress"
 import CardRecipe from './CardRecipe'
 import Masonry from 'react-masonry-css'
-import useFetch from '../useFetch'
 
 const RecipeList = () => {
-    const [searchParams, setSearchParams] = useContext(RecipesContext);
-    const [url, setUrl] = useState("http://www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata");
-    const {data: meals, isPending, error} = useFetch("http://www.themealdb.com/api/json/v1/1/search.php?s=Arrabiata");
+    const [url, setUrl] = useContext(RecipesContext);
+    const [meals, setMeals] = useState(null);
+    const [isPending, setIsPending] = useState(true);
+    const [error, setError] = useState(null);
     const breakpoints = {
         default:3,
         1100: 2,
         700: 1
       }
+    
+
     useEffect(() => {
-          if(searchParams.random){
-            setUrl("http://www.themealdb.com/api/json/v1/1/random.php")
-          }
-          if(searchParams.byName !== ''){
-            setUrl(`http://www.themealdb.com/api/json/v1/1/search.php?s=${searchParams.byName}`)
-          }
-      }, [searchParams]);
+        fetch(url, {mode: 'cors'})
+           .then(res => {
+               if(!res.ok){
+                   throw Error('Could not fetch the data for that resource!');
+               }
+               return res.json()
+           })
+           .then((data) => {
+               setMeals(data);
+               setIsPending(false);
+               setError(null);
+           })
+           .catch(err => {
+               setError(err.message);
+               setIsPending(false);
+           });
+           console.log('fetch ran')
+     }, [url]);
+
     return ( 
         <Container>
             { error && <div> {error} </div>}

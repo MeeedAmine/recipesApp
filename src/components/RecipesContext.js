@@ -3,12 +3,9 @@ import React, {useState, createContext} from 'react'
 export const RecipesContext = createContext();
 
 export const RecipesProvider = props => {
-    const [searchParams, setSearchParams] = useState({
-        random: false,
-        byName: ''
-    });
+    const [url, setUrl] = useState("https://www.themealdb.com/api/json/v2/1/search.php?s=");
     return(
-        <RecipesContext.Provider value={[searchParams, setSearchParams]}>
+        <RecipesContext.Provider value={[url, setUrl]}>
             {props.children}
         </RecipesContext.Provider>
     )

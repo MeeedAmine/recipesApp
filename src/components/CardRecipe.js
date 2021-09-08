@@ -40,22 +40,42 @@ function parseData(data){
   const ingredients = []
   if(data){
     for(let i=1; i<21; i++){
-      if(data[`strMeasure${i}`]){
+      if(data[`strIngredient${i}`] && data[`strIngredient${i}`].length > 1){
         ingredients.push(`${data[`strMeasure${i}`]} ${data[`strIngredient${i}`]}`)
       }
     }
     return ingredients;
   }
 }
-const CardRecipe = ({meal}) => {
+const CardRecipe = ({meal, setMeals, meals}) => {
     
     const classes = useStyles();
     const [expanded, setExpanded] = React.useState(false);
-    const ingredients = parseData(meal)
+    const ingredients = parseData(meal);
+    const [isFavorite, setIsFavorite] = React.useState(false);
+
     const handleExpandClick = () => {
     setExpanded(!expanded);
     };
+    
+    React.useEffect(() => {
+      if(localStorage.getItem(meal.idMeal)){
+        setIsFavorite(true);
+      } else {
+        setIsFavorite(false);
+      }
+    }, []);
 
+    const handleStorage = (id) =>{
+      if(!localStorage.getItem(id)){
+        localStorage.setItem(id, JSON.stringify(meal));
+        setIsFavorite(true);
+      } else {
+        localStorage.removeItem(id);
+        setIsFavorite(false);
+        if(meals){setMeals(meals.filter(item => {return item.idMeal !== id;}))}
+      }
+    }
   return (
     <Card className={classes.root}>
       <CardMedia
@@ -75,8 +95,8 @@ const CardRecipe = ({meal}) => {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
+        <IconButton aria-label="add to favorites" onClick={() => handleStorage(meal.idMeal)}>
+          <FavoriteIcon color={isFavorite ? 'secondary' : 'inherit'} />
         </IconButton>
         <IconButton
           className={clsx(classes.expand, {
@@ -98,7 +118,7 @@ const CardRecipe = ({meal}) => {
           <Typography variant="h6">Ingredients:</Typography>
           <Typography>
             <ul>
-              {ingredients.map(ingredient => (<li>{ingredient}</li>))}
+              {ingredients.map(ingredient => (<li key={ingredient}>{ingredient}</li>))}
             </ul>
           </Typography>
         </CardContent>

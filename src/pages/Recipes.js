@@ -4,7 +4,6 @@ import { RecipesProvider } from "../components/RecipesContext";
 
 const Recipes = () => {
     return (
-
         <RecipesProvider>
             <div>
                 <SearchBar />

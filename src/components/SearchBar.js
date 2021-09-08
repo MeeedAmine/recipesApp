@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react'
-import { Button, Container, TextField } from "@material-ui/core";
+import React, { useContext, useState} from 'react'
+import { Button, TextField } from "@material-ui/core";
 import { makeStyles} from "@material-ui/core";
 import { RecipesContext } from "./RecipesContext";
 
@@ -15,7 +15,7 @@ const useStyles = makeStyles({
         justifyContent: "center"
     },
     input: {
-        width: "60%",
+        width: "50%",
         marginRight:"5px"
     },
     search:{
@@ -25,31 +25,34 @@ const useStyles = makeStyles({
 
 const SearchBar = () => {
     const classes = useStyles();
-    const [searchParams, setSearchParams] = useContext(RecipesContext);
+    const [url, setUrl] = useContext(RecipesContext);
     const [name, setName] = useState('')
-
+    
     const handleSubmit = (e) => {
         e.preventDefault();
-        setSearchParams({random: false, byNmae: name})
+        setUrl(`https://www.themealdb.com/api/json/v2/1/search.php?s=${name}`);
+        setName("")
     }
     const handleRandom = (e) => {
         e.preventDefault();
-        setSearchParams({random: true, byName: ''})
+        setUrl("https://www.themealdb.com/api/json/v2/1/random.php");
     }
 
     return ( 
-        <Container className={classes.root}>
-            <form className={classes.form}>
+        <div className={classes.root}>
+            <form className={classes.form} >
                 <TextField 
                 id="outlined-basic" 
                 label="Search by name" 
+                value={name}
                 variant="outlined" 
                 onChange={e => setName(e.target.value)}
                 className={classes.input}/>
                 <Button 
                 variant="contained" 
                 color="primary"
-                className={classes.search}>
+                className={classes.search}
+                onClick={handleSubmit}>
                     Search
                 </Button>
                 <Button 
@@ -59,7 +62,7 @@ const SearchBar = () => {
                     Surprise me!
                 </Button>
             </form>
-        </Container>
+        </div>
      );
 }
  
