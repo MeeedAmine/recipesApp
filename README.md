@@ -1,6 +1,13 @@
-# Getting Started with Create React App
+# Recipes App
+Simple wibsite made with react where you can find some famous food recipes.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This application relies on external API service to get films information:
+* [TheMealDB API](https://www.themealdb.com/)
+### Live demo:
+https://recipes-amine.netlify.app/
+
+### Screenshots:
+
 
 ## Available Scripts
 
