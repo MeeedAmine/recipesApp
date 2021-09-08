@@ -7,7 +7,7 @@ This application relies on external API service to get films information:
 https://recipes-amine.netlify.app/
 
 ### Screenshots:
-
+![demo of the app](https://github.com/MeeedAmine/recipesApp/blob/master/public/assets/recipes-project.gif)
 
 ## Available Scripts
 
